@@ -38,7 +38,7 @@ class GameOfLife:
         print("Grid is: ", len(self.neighbours[0]), "x",len(self.neighbours))
 
 
-    def get_neighbours(self):
+    def eval_neighbours(self):
         for i in range(self.GridM):
             for j in range(self.GridN):
                 neighbour = 0
@@ -49,17 +49,34 @@ class GameOfLife:
                         if( a == 0 and b == 0): continue
                         if(x_in < 0 or x_in >= self.GridM): continue
                         if(y_in < 0 or y_in >= self.GridN): continue
-                        # print("xin, yin", x_in, y_in)
                         if( self.population[x_in][y_in] ):
-                            neighbor += 1
-                self.neighbours[i][j] = neighbor
+                            neighbour += 1
+                self.neighbours[i][j] = neighbour
 
+
+    def eval_nextState(self):
+        for i in range(self.GridM):
+            for j in range(self.GridN):
+                # if(self.neighbours[i][j] < 2): print("underpopulation at ", j, i)
+                # if(self.neighbours[i][j] == 2) : print("Stay alive at ", j, i )
+                # if(self.neighbours[i][j] == 3) : print("Born at ", j, i )
+                # if(self.neighbours[i][j] > 3) : print("Overpopulation at ", j, i )
+                if(self.neighbours[i][j] < 2): self.population[i][j] = False
+                if(self.neighbours[i][j] == 2) : continue
+                if(self.neighbours[i][j] == 3) : self.population[i][j] = True
+                if(self.neighbours[i][j] > 3) : self.population[i][j] = False
+
+    def get_cell(self, x, y):
+        return self.population[y][x]
+
+    def get_row(self, y):
+        return self.population[y]
 
     def print_grid(self):
         print("Population:")
         for i in range(self.GridM):
             print(self.population[i])
-        print("Neighbours:")
-        for i in range(self.GridM):
-            print(self.neighbours[i])
+        # print("Neighbours:")
+        # for i in range(self.GridM):
+        #     print(self.neighbours[i])
         

@@ -10,7 +10,8 @@ def main(argv):
     else:
         game = GOL.GameOfLife(GridN_, GridM_)
     
-    
+    game.get_population()
+    game.print_grid()
 
 if __name__ == "__main__":
     main(sys.argv)

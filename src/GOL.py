@@ -55,6 +55,8 @@ class GameOfLife:
 
 
     def eval_nextState(self):
+        self.eval_neighbours()
+        # self.print_grid()
         for i in range(self.GridM):
             for j in range(self.GridN):
                 # if(self.neighbours[i][j] < 2): print("underpopulation at ", j, i)
@@ -68,6 +70,9 @@ class GameOfLife:
 
     def get_cell(self, x, y):
         return self.population[y][x]
+
+    def set_cell(self, x, y):
+        self.population[y][x] = True
 
     def get_row(self, y):
         return self.population[y]

@@ -9,3 +9,5 @@ Actual Readme to follow sometime later.
 * OS: Ubuntu 20.04
 * Python3 ver: 3.8.10
 * Pygame ver: 1.9.6
+* python3-tk ver 3.8.10
+* (EasyGUI)[https://pypi.org/project/easygui/]

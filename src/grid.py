@@ -10,27 +10,35 @@ WHITE = (255,255,255)
 BLACK = (0,0,0)
 BLUE = (14,77,146)
 GREY = (128,128,128)
-WIDTH = 720
-HEIGHT = 720
+WIDTH = 1000
+HEIGHT = 1000
 
 
 class Grid:
-    def __init__(self, iGridN, iGridM ):
+    def __init__(self, iGridN, iGridM, input_type):
         self.GridN = iGridN
         self.GridM = iGridM
+        
         self.game = GOL.GameOfLife(iGridN, iGridM)
-        self.h_interval = WIDTH/iGridN
-        self.v_interval = HEIGHT/iGridM
-        self.grid_lines = []
+        if(input_type == "Manual"): self.game.init_population(self.GridN, self.GridM)
+        elif( input_type == "Random" ): self.game.rand_population(self.GridN, self.GridM)
+        elif (input_type == "Csv"): 
+            self.GridN, self.GridM = self.game.csv_population()
 
-        for i in range(iGridN):
+        
+        self.h_interval = WIDTH/self.GridN
+        self.v_interval = HEIGHT/self.GridM
+        self.grid_lines = []
+        
+        for i in range(self.GridN):
             x_lines = [(0,self.v_interval+self.v_interval*i),(WIDTH, self.v_interval+self.v_interval*i)]
             self.grid_lines.append(x_lines)
 
-        for i in range(iGridM):
+        for i in range(self.GridM):
             y_lines = [(self.h_interval+self.h_interval*i, 0),(self.h_interval+self.h_interval*i, HEIGHT)]
             self.grid_lines.append(y_lines)
 
+        
         
         # print("Grid lines: ", self.grid_lines)
 
@@ -45,7 +53,7 @@ class Grid:
         self.game.set_cell(x,y)
 
     def delete_cell(self,x,y,surface):
-        rect = rect = pygame.Rect(x*self.h_interval+1, y*self.v_interval+1, self.h_interval-1, self.v_interval-1)
+        rect = rect = pygame.Rect(x*self.h_interval, y*self.v_interval, self.h_interval, self.v_interval)
         pygame.draw.rect(surface, WHITE, rect, 0)
 
     def draw_state(self,surface):

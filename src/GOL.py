@@ -1,17 +1,21 @@
 import random
+import easygui as g
+import csv
+
+filedialog_title = "Choose a csv file"
 
 class GameOfLife:
     #class members
     GridN = 0
     GridM = 0
-    neighbours = [[]]
-    population = [[]]
+    neighbours = []
+    population = []
 
 
     def __init__(self, iGridN, iGridM):
         self.GridN = iGridN
         self.GridM = iGridM
-        self.rand_population(self.GridN, self.GridM)
+        # self.rand_population(self.GridN, self.GridM)
 
     def rand_population(self, GridN, GridM):
 
@@ -35,8 +39,20 @@ class GameOfLife:
             temp_list = [ False for i in range(GridN)]
             self.population[i] = temp_list
             self.neighbours[i] = [0 for i in range(GridN)]
-        print("Grid is: ", len(self.neighbours[0]), "x",len(self.neighbours))
+        # print("Grid is: ", len(self.neighbours[0]), "x",len(self.neighbours))
 
+    def csv_population(self):
+        filename = g.fileopenbox(filedialog_title, filetypes=["*.csv"], )
+        with open(filename) as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                int_list = list(map(int, row))
+                bool_list = list(map(bool, int_list))
+                self.population.append(bool_list)
+                self.neighbours.append(bool_list)
+        self.GridN = len(self.population[0])
+        self.GridM = len(self.population)
+        return self.GridN, self.GridM
 
     def eval_neighbours(self):
         for i in range(self.GridM):

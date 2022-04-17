@@ -3,8 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pyGame of Life's documentation!
+pyGame of Life
 ==========================================
+
+===========
+Description
+===========
+pyGame of Life is a Python Game of Life implementation built using a Pygame frontend.
+
+See the installation section for build instructions.
+
+============
+Dependencies
+============
+* `Pygame <https://pypi.org/project/pygame/>`_
+* `EasyGUI <https://pypi.org/project/easygui/>`_
 
 .. toctree::
    :maxdepth: 2
@@ -15,11 +28,7 @@ Welcome to pyGame of Life's documentation!
    support
 
 
-
 Indices and tables
 ==================
-
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
-

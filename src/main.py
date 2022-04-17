@@ -13,9 +13,6 @@ GridM_ = 25
 WIDTH = 720
 HEIGHT = 720
 
-clear = lambda: os.system('clear')
-
-
 filedialog_title = "Choose a csv file"
 intro_msg = "Welcome to pyGame of Life."
 keys_manual = "\nb: Toggle Autorun\nh: See this Prompt Again\nr Reset the board\n"

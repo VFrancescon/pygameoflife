@@ -109,10 +109,15 @@ class GameOfLife:
                     sys.exit(0)
                 bool_list = list(map(bool, int_list))
                 self.population.append(bool_list)
-                self.neighbours.append(bool_list)
+                self.neighbours.append(int_list)
+                
         self.GridN = len(self.population[0])
         self.GridM = len(self.population)
         csvfile.close()
+        # self.eval_neighbours()
+
+        # self.print_grid()
+
         return self.GridN, self.GridM
 
     def eval_neighbours(self):
@@ -131,6 +136,7 @@ class GameOfLife:
                         if(y_in < 0 or y_in >= self.GridN): continue
                         if( self.population[x_in][y_in] ):
                             neighbour += 1
+                # print(i,j)
                 self.neighbours[i][j] = neighbour
 
 
@@ -205,4 +211,10 @@ class GameOfLife:
         print("Population:")
         for i in range(self.GridM):
             print(self.population[i])
+
+        
+        print("Neighbors:")
+        for i in range(self.GridM):
+            print(self.neighbours[i])
+
         

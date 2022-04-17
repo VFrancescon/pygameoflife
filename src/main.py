@@ -6,12 +6,10 @@ import pygame
 import easygui as g
 pygame.init()
 pygame.font.init()
-os.environ['SDL_VIDEO_WINDOW_POS'] = '500,0'
+os.environ['SDL_VIDEO_WINDOW_POS'] = '200,0'
 
 GridN_ = 25
 GridM_ = 25
-WIDTH = 720
-HEIGHT = 720
 
 filedialog_title = "Choose a csv file"
 intro_msg = "Welcome to pyGame of Life."
@@ -63,7 +61,7 @@ def main(argv):
         pygame.display.flip()
         if(autoRun):
             grid.draw_NextState(surface)
-            time.sleep(0.5)
+            time.sleep(0.25)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -72,6 +70,7 @@ def main(argv):
                 elif event.key == pygame.K_b: inputk = 'b'
                 elif event.key == pygame.K_h: inputk = 'h'
                 elif event.key == pygame.K_r: inputk = 'r'
+                elif event.key == pygame.K_s: inputk = 's'
                 elif event.key == pygame.K_ESCAPE : inputk = 'esc'
                 else: continue
                 if isinstance(inputk, str):
@@ -79,6 +78,7 @@ def main(argv):
                     elif(inputk == 'b') : autoRun = not autoRun
                     elif(inputk == 'h') : textBox(manual_msg, "Runtime Manual")
                     elif(inputk == 'r') : grid.reset_Board(surface)
+                    elif(inputk == 's') : grid.save_Board()
                     elif(inputk == 'esc') : running = False
                     else: continue
             if event.type == pygame.MOUSEBUTTONDOWN:

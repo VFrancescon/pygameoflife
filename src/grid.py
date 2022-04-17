@@ -1,3 +1,4 @@
+from easygui import enterbox
 import pygame
 import GOL
 
@@ -126,3 +127,15 @@ class Grid:
             self.GridN, self.GridM = self.game.csv_population()
 
         self.draw_state(surface)
+
+    def save_Board(self):
+        box = enterbox("Enter the output file name", "Output File")
+        filename = box + ".csv"
+        file = open(filename, 'w')
+        for i in range(self.GridM):
+            row = self.game.get_row(i)
+            for unit in range(self.GridN):
+                if unit == (self.GridN - 1): string = str(int(row[unit])) + "\n"
+                else: string = str(int(row[unit])) + ","
+                file.write(string)
+        file.close()                    

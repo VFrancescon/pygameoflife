@@ -25,6 +25,7 @@ Dependencies
 
    installation
    classes
+   usage
    support
 
 

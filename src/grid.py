@@ -1,6 +1,7 @@
-from easygui import enterbox
+import easygui as g
 import pygame
 import GOL
+from main import inputSrcBox
 
 pygame.init()
 pygame.font.init()
@@ -10,13 +11,16 @@ WHITE = (255,255,255)
 BLACK = (0,0,0)
 BLUE = (14,77,146)
 GREY = (128,128,128)
-WIDTH = 1000
-HEIGHT = 1000
 
 
 class Grid:
     """Frontend Class. Handles the plotting the backend data on screen.
     """
+    WIDTH = 1000
+    HEIGHT = 1000
+    h_interval = 40
+    v_interval = 40
+
     def __init__(self, iGridN, iGridM, input_type):
         """Creates an instance of :class:`GOL.GameOfLife` and initialises it accordingly.
 
@@ -39,8 +43,12 @@ class Grid:
             self.GridN, self.GridM = self.game.csv_population()
 
         
-        self.h_interval = WIDTH/self.GridN #: Horizontal size of each square
-        self.v_interval = HEIGHT/self.GridM #: Vertical size of each square
+        # self.h_interval = self.WIDTH/self.GridN #: Horizontal size of each square
+        # self.v_interval = self.HEIGHT/self.GridM #: Vertical size of each square
+
+        self.WIDTH = self.GridN*self.h_interval
+        self.HEIGHT = self.GridM*self.v_interval
+
         self.grid_lines = []
         """Container for the Grid Lines Coordinates
 
@@ -48,13 +56,13 @@ class Grid:
             Pygame lines are drawn by giving two 2D points, hence grid_lines should come out as a MxNx2 Matrix.
         """
         
-        for i in range(self.GridN):
-            x_lines = [(0,self.v_interval+self.v_interval*i),(WIDTH, self.v_interval+self.v_interval*i)]
-            self.grid_lines.append(x_lines)
-
         for i in range(self.GridM):
-            y_lines = [(self.h_interval+self.h_interval*i, 0),(self.h_interval+self.h_interval*i, HEIGHT)]
+            y_lines = [(0,self.v_interval+self.v_interval*i),(self.WIDTH, self.v_interval+self.v_interval*i)]
             self.grid_lines.append(y_lines)
+
+        for i in range(self.GridN):
+            x_lines = [(self.h_interval+self.h_interval*i, 0),(self.h_interval+self.h_interval*i, self.HEIGHT)]
+            self.grid_lines.append(x_lines)
 
     def draw_lines(self, surface):
         """Iterates over :data:`~grid.Grid.grid_lines` and draws all lines.
@@ -97,10 +105,10 @@ class Grid:
         """
         for i in range(self.GridM):
             for j in range(self.GridN):
-                if self.game.get_cell(i,j):
-                    self.fill_cell(i,j,surface)
+                if self.game.get_cell(j,i):
+                    self.fill_cell(j,i,surface)
                 else:
-                    self.delete_cell(i,j,surface)
+                    self.delete_cell(j,i,surface)
 
     def draw_NextState(self,surface):
         """Convenience function. Wraps :func:`~grid.Grid.draw_state` and :func:`~GOL.GameOfLife.eval_nextState` in one call.
@@ -121,15 +129,23 @@ class Grid:
         self.game.init_population(self.GridN, self.GridM)
         self.draw_state(surface)
 
-        if(self.input_type == "Manual"): self.game.init_population(self.GridN, self.GridM)
-        elif( self.input_type == "Random" ): self.game.rand_population(self.GridN, self.GridM)
-        elif (self.input_type == "Csv"): 
-            self.GridN, self.GridM = self.game.csv_population()
+        input_type = self.inputSrcBox()
 
+        if(input_type == "Manual"): self.game.init_population(self.GridN, self.GridM)
+        elif( input_type == "Random" ): self.game.rand_population(self.GridN, self.GridM)
+        elif (input_type == "Csv"): 
+            self.GridN, self.GridM = self.game.csv_population()
+        self.recalculateDimensions()
+        
         self.draw_state(surface)
 
     def save_Board(self):
-        box = enterbox("Enter the output file name", "Output File")
+        """Iterates over the current board using :func:`~GOL.GameOfLife.get_row` and saves the contents to a csv file.
+        
+        The File name is chosen through an easyGUI utility.
+        """
+
+        box = g.enterbox("Enter the output file name", "Output File")
         filename = box + ".csv"
         file = open(filename, 'w')
         for i in range(self.GridM):
@@ -139,3 +155,52 @@ class Grid:
                 else: string = str(int(row[unit])) + ","
                 file.write(string)
         file.close()                    
+
+    def recalculateDimensions(self):
+        """Recalculates the intervals to fit NxM squares in the set WIDTH and HEIGHT. Then recalculates the grid lines.
+        """
+
+
+        self.h_interval = self.WIDTH/self.GridN #: Horizontal size of each square
+        self.v_interval = self.HEIGHT/self.GridM #: Vertical size of each square
+        self.grid_lines = []
+        
+        for i in range(self.GridM):
+            y_lines = [(0,self.v_interval+self.v_interval*i),(self.WIDTH, self.v_interval+self.v_interval*i)]
+            self.grid_lines.append(y_lines)
+
+        for i in range(self.GridN):
+            x_lines = [(self.h_interval+self.h_interval*i, 0),(self.h_interval+self.h_interval*i, self.HEIGHT)]
+            self.grid_lines.append(x_lines)
+
+
+    def inputSrcBox():
+        """easyGUI box that lets the user choose the input mode. Same as in Main.
+
+        Returns:
+            String: User Selection of one of the three Options
+        """
+        Title = "Input Mode"
+        message = "Choose an input source:"
+        option = ["Manual", "Random", "Csv"]
+        while 1:
+            selection = g.choicebox(message, Title, option)
+            if( selection is None):
+                return "Manual"
+            else: return selection
+
+    def openCSV(self, surface):
+        """Allows user to open a CSV and write it onto the screen at run-time. Effectively an underpowered version of :func:`~grid.Grid.reset_Board`
+
+        Args:
+            surface (pygame Surface): Window surface to draw on.
+        """
+
+
+        self.game.init_population(self.GridN, self.GridM)
+        self.draw_state(surface)
+
+        self.GridN, self.GridM = self.game.csv_population()
+        self.recalculateDimensions()
+        
+        self.draw_state(surface)

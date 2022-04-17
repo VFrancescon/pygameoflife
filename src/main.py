@@ -13,7 +13,7 @@ GridM_ = 25
 
 filedialog_title = "Choose a csv file"
 intro_msg = "Welcome to pyGame of Life."
-keys_manual = "\nb: Toggle Autorun\nh: See this Prompt Again\nr Reset the board\n"
+keys_manual = "\nb: Toggle Autorun\nh: See this Prompt Again\no Open a CSV file\nr Reset the board\ns Save the board\n"
 mouse_manual = "\nLeft Click: Populate Cell.\nRight Click: Delete Cell\n"
 manual_msg = " Commands are as follows:" + keys_manual + mouse_manual + "\nEsc: Quit the Program\n"
 
@@ -36,18 +36,20 @@ def inputSrcBox(msg):
 def main(argv):
     running = True
     autoRun = False
-    surface = pygame.display.set_mode((gr.WIDTH, gr.HEIGHT))
-    pygame.display.set_caption("pyGame of Life")
-    surface.fill((255,255,255))
-    pygame.display.flip()
-    time.sleep(1)
-    input_method = inputSrcBox(intro_msg+manual_msg)
     
+    input_method = inputSrcBox(intro_msg+manual_msg)
     if len(argv) == 3:   
         grid = gr.Grid(int(argv[1]), int(argv[2]), input_method)
     else:
         grid = gr.Grid(GridN_, GridM_, input_method)
         
+    surface = pygame.display.set_mode((grid.WIDTH, grid.HEIGHT))
+    pygame.display.set_caption("pyGame of Life")
+    surface.fill((255,255,255))
+    pygame.display.flip()
+    time.sleep(1)
+    
+
     h_interval = grid.h_interval
     v_interval = grid.v_interval
     
@@ -71,6 +73,7 @@ def main(argv):
                 elif event.key == pygame.K_h: inputk = 'h'
                 elif event.key == pygame.K_r: inputk = 'r'
                 elif event.key == pygame.K_s: inputk = 's'
+                elif event.key == pygame.K_o: inputk = 'o'
                 elif event.key == pygame.K_ESCAPE : inputk = 'esc'
                 else: continue
                 if isinstance(inputk, str):
@@ -79,6 +82,7 @@ def main(argv):
                     elif(inputk == 'h') : textBox(manual_msg, "Runtime Manual")
                     elif(inputk == 'r') : grid.reset_Board(surface)
                     elif(inputk == 's') : grid.save_Board()
+                    elif(inputk == 'o') : grid.openCSV(surface)
                     elif(inputk == 'esc') : running = False
                     else: continue
             if event.type == pygame.MOUSEBUTTONDOWN:

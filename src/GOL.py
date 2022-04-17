@@ -42,14 +42,13 @@ class GameOfLife:
             GridM (integer): Grid M size
         """
 
-        self.population = [ False for i in range(GridM)] 
-        self.neighbours = [ False for i in range(GridM)]
-        
-
+        self.population = []
+        self.neighbours = []
         for i in range(GridM):
             temp_list = [ bool(random.getrandbits(1)) for i in range(GridN)]
-            self.population[i] = temp_list
-            self.neighbours[i] = [0 for i in range(GridN)]
+            self.population.append(temp_list)
+            temp = [0 for i in range(GridN)]
+            self.neighbours.append(temp)
 
     def init_population(self, GridN, GridM):
         """Initialises empty :data:`~GOL.GameOfLife.population` and :data:`~GOL.GameOfLife.neighbours` arrays
@@ -61,15 +60,14 @@ class GameOfLife:
             GridN (integer): Grid N size
             GridM (integer): Grid M size
         """
-
-        self.population = [ False for i in range(GridM)]
-        
-        self.neighbours = [ False for i in range(GridM)]
-
+        self.population = []
+        self.neighbours = []
         for i in range(GridM):
             temp_list = [ False for i in range(GridN)]
-            self.population[i] = temp_list
-            self.neighbours[i] = [0 for i in range(GridN)]
+            self.population.append(temp_list)
+            temp = [0 for i in range(GridN)]
+            self.neighbours.append(temp)
+
 
 
     def csv_population(self):
@@ -98,6 +96,9 @@ class GameOfLife:
 
             
         """
+        self.population = []
+        self.neighbours = []
+
         filename = g.fileopenbox(filedialog_title, filetypes=["*.csv"], )
         with open(filename) as csvfile:
             reader = csv.reader(csvfile)
@@ -169,11 +170,12 @@ class GameOfLife:
         Returns:
             bool: True if cell is alive, False if it is dead
         """
-        try:
-            self.population[y][x]
-        except:
-            print("ERROR: Index out of Range. Check the CSV for incomplete rows")
-            sys.exit(0)
+        # try:
+        #     assert(self.population[y][x])
+        # except:
+        #     print("ERROR: Index out of Range. Check the CSV for incomplete rows")
+        #     sys.exit(0)
+        # print(y,x)
         return self.population[y][x]
 
     def set_cell(self, x, y):

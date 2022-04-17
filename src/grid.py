@@ -1,5 +1,4 @@
 import pygame
-import os
 import GOL
 
 pygame.init()
@@ -51,6 +50,7 @@ class Grid:
     def delete_cell(self,x,y,surface):
         rect = rect = pygame.Rect(x*self.h_interval, y*self.v_interval, self.h_interval, self.v_interval)
         pygame.draw.rect(surface, WHITE, rect, 0)
+        self.game.unset_cell(x,y)
 
     def draw_state(self,surface):
         for i in range(self.GridM):

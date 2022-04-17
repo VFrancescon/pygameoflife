@@ -1,0 +1,4 @@
+pygame
+easygui
+sphinx
+sphinx-rtd-theme

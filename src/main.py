@@ -64,6 +64,9 @@ def main(argv):
     while(running):
         grid.draw_lines(surface)
         pygame.display.flip()
+        if(autoRun):
+            grid.draw_NextState(surface)
+            time.sleep(0.5)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -90,9 +93,7 @@ def main(argv):
                 if(pygame.mouse.get_pressed()[2]):    
                     grid.delete_cell(x_click,y_click, surface)
 
-        if(autoRun):
-            grid.draw_NextState(surface)
-            time.sleep(0.5)
+        
 
 
 if __name__ == "__main__":

@@ -1,10 +1,12 @@
 import random
 import easygui as g
 import csv
+import sys
 
 filedialog_title = "Choose a csv file"
 
 class GameOfLife:
+    
     #class members
     GridN = 0
     GridM = 0
@@ -15,7 +17,6 @@ class GameOfLife:
     def __init__(self, iGridN, iGridM):
         self.GridN = iGridN
         self.GridM = iGridM
-        # self.rand_population(self.GridN, self.GridM)
 
     def rand_population(self, GridN, GridM):
 
@@ -27,7 +28,6 @@ class GameOfLife:
             temp_list = [ bool(random.getrandbits(1)) for i in range(GridN)]
             self.population[i] = temp_list
             self.neighbours[i] = [0 for i in range(GridN)]
-        print("Grid is: ", len(self.neighbours[0]), "x",len(self.neighbours))
 
     def init_population(self, GridN, GridM):
 
@@ -39,7 +39,7 @@ class GameOfLife:
             temp_list = [ False for i in range(GridN)]
             self.population[i] = temp_list
             self.neighbours[i] = [0 for i in range(GridN)]
-        # print("Grid is: ", len(self.neighbours[0]), "x",len(self.neighbours))
+
 
     def csv_population(self):
         filename = g.fileopenbox(filedialog_title, filetypes=["*.csv"], )
@@ -75,10 +75,6 @@ class GameOfLife:
         # self.print_grid()
         for i in range(self.GridM):
             for j in range(self.GridN):
-                # if(self.neighbours[i][j] < 2): print("underpopulation at ", j, i)
-                # if(self.neighbours[i][j] == 2) : print("Stay alive at ", j, i )
-                # if(self.neighbours[i][j] == 3) : print("Born at ", j, i )
-                # if(self.neighbours[i][j] > 3) : print("Overpopulation at ", j, i )
                 if(self.neighbours[i][j] < 2): self.population[i][j] = False
                 if(self.neighbours[i][j] == 2) : continue
                 if(self.neighbours[i][j] == 3) : self.population[i][j] = True
@@ -97,7 +93,4 @@ class GameOfLife:
         print("Population:")
         for i in range(self.GridM):
             print(self.population[i])
-        # print("Neighbours:")
-        # for i in range(self.GridM):
-        #     print(self.neighbours[i])
         

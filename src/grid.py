@@ -18,6 +18,7 @@ class Grid:
     def __init__(self, iGridN, iGridM, input_type):
         self.GridN = iGridN
         self.GridM = iGridM
+        self.input_type = input_type
         
         self.game = GOL.GameOfLife(iGridN, iGridM)
         if(input_type == "Manual"): self.game.init_population(self.GridN, self.GridM)
@@ -38,17 +39,12 @@ class Grid:
             y_lines = [(self.h_interval+self.h_interval*i, 0),(self.h_interval+self.h_interval*i, HEIGHT)]
             self.grid_lines.append(y_lines)
 
-        
-        
-        # print("Grid lines: ", self.grid_lines)
-
     def draw_lines(self, surface):
         for line in self.grid_lines:
             pygame.draw.line(surface, BLACK, line[0], line[1], 1)
 
     def fill_cell(self, x, y, surface):
         rect = pygame.Rect(x*self.h_interval, y*self.v_interval, self.h_interval, self.v_interval)
-        # print("coordinates: ", x*self.h_interval, y*self.v_interval, self.h_interval, self.v_interval)
         pygame.draw.rect(surface, BLACK, rect, 0)
         self.game.set_cell(x,y)
 
@@ -66,4 +62,15 @@ class Grid:
 
     def draw_NextState(self,surface):
         self.game.eval_nextState()
+        self.draw_state(surface)
+
+    def reset_Board(self,surface):
+        self.game.init_population(self.GridN, self.GridM)
+        self.draw_state(surface)
+
+        if(self.input_type == "Manual"): self.game.init_population(self.GridN, self.GridM)
+        elif( self.input_type == "Random" ): self.game.rand_population(self.GridN, self.GridM)
+        elif (self.input_type == "Csv"): 
+            self.GridN, self.GridM = self.game.csv_population()
+
         self.draw_state(surface)

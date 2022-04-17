@@ -1,15 +1,12 @@
-from curses import KEY_BACKSPACE
 import time
-import GOL
 import grid as gr
 import sys
 import os
-import pygame
+import pygame 
 import easygui as g
 pygame.init()
 pygame.font.init()
-
-os.environ['SDL_VIDEO_WINDOW_POS'] = '400,100'
+os.environ['SDL_VIDEO_WINDOW_POS'] = '500,0'
 
 GridN_ = 25
 GridM_ = 25
@@ -18,12 +15,15 @@ HEIGHT = 720
 
 clear = lambda: os.system('clear')
 
+
 filedialog_title = "Choose a csv file"
-intro_msg = "Welcome to pyGame of Life. Commands are as follows:\n"
-manual_msg = "o: Load a csv file\nn: Step to next state\nb: Toggle Autorun\nEsc: Quit the Program\nh: See this Prompt Again"
+intro_msg = "Welcome to pyGame of Life."
+keys_manual = "\nb: Toggle Autorun\nh: See this Prompt Again\nr Reset the board\n"
+mouse_manual = "\nLeft Click: Populate Cell.\nRight Click: Delete Cell\n"
+manual_msg = " Commands are as follows:" + keys_manual + mouse_manual + "\nEsc: Quit the Program\n"
 
 
-def introBox(msg, title=""):
+def textBox(msg, title=""):
     ret_val = g.msgbox(msg, title)
     if ret_val is None: # User closed msgbox
         sys.exit(0)
@@ -33,7 +33,7 @@ def inputSrcBox(msg):
     message = "Choose an input source:"
     option = ["Manual", "Random", "Csv"]
     while 1:
-        selection = g.choicebox(intro_msg+manual_msg+message, Title, option)
+        selection = g.choicebox(msg+message, Title, option)
         if( selection is None):
             return "Manual"
         else: return selection
@@ -59,6 +59,7 @@ def main(argv):
     
     grid.draw_lines(surface)
     grid.draw_state(surface)
+
     
     while(running):
         grid.draw_lines(surface)
@@ -67,16 +68,17 @@ def main(argv):
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_o: inputk = 'o'
-                elif event.key == pygame.K_n: inputk = 'n'
+                if event.key == pygame.K_n: inputk = 'n'
                 elif event.key == pygame.K_b: inputk = 'b'
                 elif event.key == pygame.K_h: inputk = 'h'
+                elif event.key == pygame.K_r: inputk = 'r'
                 elif event.key == pygame.K_ESCAPE : inputk = 'esc'
+                else: continue
                 if isinstance(inputk, str):
-                    if(inputk == 'o'): filename = g.fileopenbox(filedialog_title, filetypes=["*.csv"], )
-                    elif(inputk == 'n'): grid.draw_NextState(surface)
+                    if(inputk == 'n'): grid.draw_NextState(surface)
                     elif(inputk == 'b') : autoRun = not autoRun
-                    elif(inputk == 'h') : introBox(manual_msg, "Runtime Manual")
+                    elif(inputk == 'h') : textBox(manual_msg, "Runtime Manual")
+                    elif(inputk == 'r') : grid.reset_Board(surface)
                     elif(inputk == 'esc') : running = False
                     else: continue
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -84,32 +86,13 @@ def main(argv):
                 x_click = int(pos[0] // h_interval)
                 y_click = int(pos[1] // v_interval)
                 if(pygame.mouse.get_pressed()[0]):    
-                    # print("mouse press at: ", x_click, y_click)
                     grid.fill_cell(x_click,y_click, surface)
                 if(pygame.mouse.get_pressed()[2]):    
-                    # print("mouse press at: ", x_click, y_click)
                     grid.delete_cell(x_click,y_click, surface)
 
         if(autoRun):
             grid.draw_NextState(surface)
             time.sleep(0.5)
-                
-
-    # game.eval_neighbours()
-    # game.print_grid()
-    # game.eval_nextState()
-    # game.print_grid()
-    
-    # usr_in = True
-    
-    # while(usr_in):
-    #     input("Press enter to continue")
-    #     game.eval_neighbours()
-    #     game.print_grid()
-    #     print(" at 1, 3: ", game.get_cell(1,3))
-    #     game.eval_nextState()
-    #     game.print_grid()
-    #     print(" at 2, 1: ", game.get_cell(2,1))
 
 
 if __name__ == "__main__":

@@ -9,6 +9,11 @@ pyGame of Life
 ===========
 Description
 ===========
+
+.. image:: ../images/title_card.png
+   :width: 400
+   :alt: PyGame of Life Title Card
+
 pyGame of Life is a Python Game of Life implementation built using a Pygame frontend.
 
 See the installation section for build instructions.
@@ -16,6 +21,8 @@ See the installation section for build instructions.
 ============
 Dependencies
 ============
+Below are the pypi pages for project's main dependencies. Both can be install from pip.
+
 * `Pygame <https://pypi.org/project/pygame/>`_
 * `EasyGUI <https://pypi.org/project/easygui/>`_
 

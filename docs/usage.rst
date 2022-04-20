@@ -2,6 +2,20 @@
 Usage
 =============
 
+.. note::
+
+  Assuming all Dependencies have been cleared, the program can be simply run from the command line
+
+.. code-block::
+  
+    python3 src/main.py
+
+Additionally, the grid size can be manually set as follows:
+
+.. code-block::
+
+    python3 src/main.py 20 20
+
 -----------
 Keybindings
 -----------

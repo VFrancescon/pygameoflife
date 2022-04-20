@@ -1,3 +1,7 @@
+### File: main.py
+### Author: Vittorio Francescon for University of Leeds
+### Description: Main driver code for the pyGame of Life project.
+
 import time
 import grid as gr
 import sys
@@ -5,7 +9,6 @@ import os
 import pygame 
 import easygui as g
 pygame.init()
-pygame.font.init()
 os.environ['SDL_VIDEO_WINDOW_POS'] = '200,0'
 
 GridN_ = 25
@@ -17,12 +20,16 @@ keys_manual = "\nb: Toggle Autorun\nh: See this Prompt Again\no Open a CSV file\
 mouse_manual = "\nLeft Click: Populate Cell.\nRight Click: Delete Cell\n"
 manual_msg = " Commands are as follows:" + keys_manual + mouse_manual + "\nEsc: Quit the Program\n"
 
-
+#easyGUI textbox blank template. 
+#Triggers a text box displaying message msg
 def textBox(msg, title=""):
     ret_val = g.msgbox(msg, title)
     if ret_val is None: # User closed msgbox
         sys.exit(0)
 
+#easyGUI option chooser box
+#Less generic than textBox, it allows the user to set
+#their selection of input source, which is the return value
 def inputSrcBox(msg):
     Title = "Startup Message"
     message = "Choose an input source:"
@@ -34,27 +41,33 @@ def inputSrcBox(msg):
         else: return selection
 
 def main(argv):
-    running = True
-    autoRun = False
+    running = True #: enables the main running loop
+
+    autoRun = False #: toggle variable for automatic operation
     
+    #Fetch the input method from the user
     input_method = inputSrcBox(intro_msg+manual_msg)
+
+    #Handling user set Grid sizes, if given
     if len(argv) == 3:   
         grid = gr.Grid(int(argv[1]), int(argv[2]), input_method)
     else:
         grid = gr.Grid(GridN_, GridM_, input_method)
         
+    #Pygame setup
     surface = pygame.display.set_mode((grid.WIDTH, grid.HEIGHT))
     pygame.display.set_caption("pyGame of Life")
     surface.fill((255,255,255))
-    pygame.display.flip()
+    pygame.display.flip() #preliminary print to the surface
     time.sleep(1)
     
-
+    # individual square size for click handling
     h_interval = grid.h_interval
     v_interval = grid.v_interval
     
-    
+    #draw the lines onto the window
     grid.draw_lines(surface)
+    #and the initial state
     grid.draw_state(surface)
 
     

@@ -1,11 +1,9 @@
 import easygui as g
 import pygame
 import GOL
-from main import inputSrcBox
-
 pygame.init()
-pygame.font.init()
 
+#some rgb colors shortcuts
 RED = (255,0,0)
 WHITE = (255,255,255)
 BLACK = (0,0,0)
@@ -41,10 +39,6 @@ class Grid:
         elif( input_type == "Random" ): self.game.rand_population(self.GridN, self.GridM)
         elif (input_type == "Csv"): 
             self.GridN, self.GridM = self.game.csv_population()
-
-        
-        # self.h_interval = self.WIDTH/self.GridN #: Horizontal size of each square
-        # self.v_interval = self.HEIGHT/self.GridM #: Vertical size of each square
 
         self.WIDTH = self.GridN*self.h_interval
         self.HEIGHT = self.GridM*self.v_interval
@@ -146,7 +140,7 @@ class Grid:
         """
 
         box = g.enterbox("Enter the output file name", "Output File")
-        filename = box + ".csv"
+        filename = "csv_outs/" + box + ".csv"
         file = open(filename, 'w')
         for i in range(self.GridM):
             row = self.game.get_row(i)

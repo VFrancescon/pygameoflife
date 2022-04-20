@@ -22,7 +22,7 @@ Keybindings
 
 The following Keybindings are avaialble at run time:
 
-.. list-table:: Key Bindings
+.. list-table:: 
     :widths: 20 50
     :header-rows: 1
 

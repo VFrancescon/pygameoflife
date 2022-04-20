@@ -16,8 +16,8 @@ class Grid:
     """
     WIDTH = 1000
     HEIGHT = 1000
-    h_interval = 40
-    v_interval = 40
+    h_interval = 20
+    v_interval = 20
 
     def __init__(self, iGridN, iGridM, input_type):
         """Creates an instance of :class:`GOL.GameOfLife` and initialises it accordingly.
@@ -168,7 +168,7 @@ class Grid:
             self.grid_lines.append(x_lines)
 
 
-    def inputSrcBox():
+    def inputSrcBox(self):
         """easyGUI box that lets the user choose the input mode. Same as in Main.
 
         Returns:

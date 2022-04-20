@@ -76,7 +76,7 @@ def main(argv):
         pygame.display.flip()
         if(autoRun):
             grid.draw_NextState(surface)
-            time.sleep(0.25)
+            time.sleep(0.1)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False

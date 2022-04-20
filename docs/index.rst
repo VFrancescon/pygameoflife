@@ -27,15 +27,15 @@ Below are the pypi pages for project's main dependencies. Both can be install fr
 * `EasyGUI <https://pypi.org/project/easygui/>`_
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
    installation
    classes
+   main
    usage
    support
-
-
+   
 Indices and tables
 ==================
 * :ref:`genindex`

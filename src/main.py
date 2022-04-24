@@ -13,6 +13,7 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = '200,0'
 
 GridN_ = 25
 GridM_ = 25
+block_size = 20
 
 filedialog_title = "Choose a csv file"
 intro_msg = "Welcome to pyGame of Life."
@@ -47,19 +48,24 @@ def main(argv):
     
     #Fetch the input method from the user
     input_method = inputSrcBox(intro_msg+manual_msg)
+    wait_time = 0.0
 
-    #Handling user set Grid sizes, if given
-    if len(argv) == 3:   
-        grid = gr.Grid(int(argv[1]), int(argv[2]), input_method)
+    #Handling user set Grid and block sizes, if given
+    if len(argv) == 5:
+        wait_time = float(argv[4])
+        grid = gr.Grid(int(argv[1]), int(argv[2]), input_method, int(argv[3]))
+    elif len(argv) == 4:   
+        grid = gr.Grid(int(argv[1]), int(argv[2]), input_method, int(argv[3]))
+    elif len(argv) == 3: 
+        grid = gr.Grid(int(argv[1]), int(argv[2]), input_method, block_size)    
     else:
-        grid = gr.Grid(GridN_, GridM_, input_method)
+        grid = gr.Grid(GridN_, GridM_, input_method, block_size)
         
     #Pygame setup
     surface = pygame.display.set_mode((grid.WIDTH, grid.HEIGHT))
     pygame.display.set_caption("pyGame of Life")
     surface.fill((255,255,255))
     pygame.display.flip() #preliminary print to the surface
-    time.sleep(1)
     
     # individual square size for click handling
     h_interval = grid.h_interval
@@ -76,7 +82,7 @@ def main(argv):
         pygame.display.flip()
         if(autoRun):
             grid.draw_NextState(surface)
-            time.sleep(0.1)
+            time.sleep(wait_time)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False

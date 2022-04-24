@@ -16,10 +16,10 @@ class Grid:
     """
     WIDTH = 1000
     HEIGHT = 1000
-    h_interval = 20
-    v_interval = 20
+    h_interval = 5
+    v_interval = 5
 
-    def __init__(self, iGridN, iGridM, input_type):
+    def __init__(self, iGridN, iGridM, input_type, interval_size):
         """Creates an instance of :class:`GOL.GameOfLife` and initialises it accordingly.
 
         Also generates a list of line coordinates to split the screen in N*M squares.
@@ -28,11 +28,14 @@ class Grid:
             iGridN (integer): Grid N size
             iGridM (integer): Grid M size
             input_type (string): Input Source: Manual, Random and Csv
+            interval_size (integer): Square size in the grid
         """
 
         self.GridN = iGridN #: Class-wide copy of Grid N size 
         self.GridM = iGridM #: Class-wide copy of Grid M size
         self.input_type = input_type #: Class-wide copy of input_type Manual, Random and Csv
+        self.h_interval = interval_size
+        self.v_interval = interval_size
         
         self.game = GOL.GameOfLife(iGridN, iGridM)
         if(input_type == "Manual"): self.game.init_population(self.GridN, self.GridM)

@@ -2,9 +2,9 @@
 Main Driver Code
 ================
 
-------------------
-Key input handling
-------------------
+------------------------
+Keyboard input handling
+------------------------
 
 Pygame comes with general event handling, which can be used to discern key presses and clicks.
 

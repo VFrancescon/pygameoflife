@@ -7,8 +7,7 @@ All dependencies are listed in the requirements.txt file. They can be installed 
 .. note::
     The application has been built on Ubuntu 20.04, x64. Python 3.8.10.
     
-    So long as the Python environment is properly configured, the app should run on any system.
-    The one requirement is a display with resolution greater than 1000x1000 is used, as that is the display window size.
+    It has also been tested on Ubuntu 18.04, x64. Python 3.8.10.
 
 --------------
 Install pip
